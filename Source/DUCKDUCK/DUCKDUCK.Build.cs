@@ -8,7 +8,19 @@ public class DUCKDUCK : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 	
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput" });
+		PublicDependencyModuleNames.AddRange(new string[] {             
+			"Core",
+            "CoreUObject",
+            "Engine",
+            "InputCore",
+            "EnhancedInput",
+            "AIModule",
+            "StateTreeModule",
+            "GameplayStateTreeModule",
+            "UMG",
+            "Slate",
+            "OnlineSubsystem"
+		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
