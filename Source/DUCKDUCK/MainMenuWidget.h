@@ -12,6 +12,8 @@
 
 class UButton;
 class UWidgetSwitcher;
+class UEditableTextBox;
+class UDuckGameInstance;
 
 UCLASS()
 class DUCKDUCK_API UMainMenuWidget : public UUserWidget
@@ -32,6 +34,9 @@ protected:
     UButton* OnlineButton;
 
     UPROPERTY(meta = (BindWidget))
+    UButton* QuitButton;
+
+    UPROPERTY(meta = (BindWidget))
     UButton* HostButton;
 
     UPROPERTY(meta = (BindWidget))
@@ -41,7 +46,7 @@ protected:
     UButton* BackButton;
 
     UPROPERTY(meta = (BindWidget))
-    UButton* QuitButton;
+    UEditableTextBox* IPAddressJoin;
 
     UPROPERTY(meta = (BindWidget))
     UWidgetSwitcher* MenuSwitcher;
@@ -67,5 +72,8 @@ protected:
     UFUNCTION()
     void OnBackClicked();
 
-	
+private:
+
+    UDuckGameInstance* GameInstance;
+
 };

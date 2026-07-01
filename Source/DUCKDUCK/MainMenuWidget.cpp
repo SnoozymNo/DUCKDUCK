@@ -5,6 +5,8 @@
 #include "Components/Button.h"
 #include "Components/WidgetSwitcher.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/EditableTextBox.h"
+#include "DuckGameInstance.h"
 
 bool UMainMenuWidget::Initialize() {
     if (!Super::Initialize())
@@ -33,6 +35,9 @@ bool UMainMenuWidget::Initialize() {
     if (!ensure(BackButton)) {
         return false;
     }
+    if (!ensure(IPAddressJoin)) {
+        return false;
+    }
     if (!ensure(MenuSwitcher)) {
         return false;
     }
@@ -46,7 +51,7 @@ bool UMainMenuWidget::Initialize() {
     JoinButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OnJoinClicked);
     BackButton->OnClicked.AddDynamic(this, &UMainMenuWidget::OnBackClicked);
 
-
+    GameInstance = GetGameInstance<UDuckGameInstance>();
     MenuSwitcher->SetActiveWidgetIndex(0);
 
     return true;
@@ -56,7 +61,13 @@ bool UMainMenuWidget::Initialize() {
 
 void UMainMenuWidget::OnSingleClicked() {
 
-    UGameplayStatics::OpenLevel(GetWorld(), TEXT("LVL_MAPTEST"));
+    UWorld* World = GetWorld();
+    if (!ensure(World))
+    {
+        return;
+    }
+
+    World->ServerTravel("/Game/MAP/LVL_MAPTEST?listen");
     
 }
 
@@ -72,15 +83,28 @@ void UMainMenuWidget::OnOnlineClicked() {
 
 void UMainMenuWidget::OnQuitClicked() {
 
-        UKismetSystemLibrary::QuitGame(GetWorld(),nullptr,EQuitPreference::Quit,false);
+    UKismetSystemLibrary::QuitGame(GetWorld(),nullptr,EQuitPreference::Quit,false);
 
 }
 
 void UMainMenuWidget::OnHostClicked() {
+    if (!ensure(GameInstance))
+    {
+        return;
+    }
+
+    GameInstance->Host();
 
 }
 
 void UMainMenuWidget::OnJoinClicked() {
+    if (!ensure(GameInstance))
+    {
+        return;
+    }
+
+    FString IP = IPAddressJoin->GetText().ToString();
+    GameInstance->Join(IP);
 
 }
 
